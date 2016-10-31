@@ -1,0 +1,87 @@
+<md-dialog aria-label="Settings dialog" flex-xl="60" flex-lg="100">
+    <md-toolbar class="md-warn">
+        <div class="md-toolbar-tools">
+            <h1 class="md-flex"> Panneau d'administration </h1>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <div layout="row" layout-margin>
+                <md-toolbar class="md-warn">
+                    <h2 class="md-toolbar-tools"> Gérer les données de l'instance </h2>
+                </md-toolbar>
+            </div>
+            <div layout="row" layout-margin layout-align="center center">
+                <div flex>
+                    <label class="md-icon-button md-raised md-primary">
+                        <md-button aria-label="export.zip" href="/data/all_export.zip" target="_blank">
+                            <md-icon md-font-library="material-icons" class="md-light md-48">get_app</md-icon>
+                            Exporter les données en une archive zip
+                        </md-button>
+                    </label>
+                </div>
+                <div flex>
+                    <label class="md-icon-button md-raised md-primary">
+                        <!-- hack file input display:none -->
+                        <input type="file" name="file" style="display:none" onchange="angular.element(this).scope().uploadedFile(this)"/>
+                        <md-icon md-font-library="material-icons" class="md-light md-48">file_upload</md-icon>
+                        Importer un zip contenant les données
+                    </label>
+                </div>
+            </div>
+            <!-- DAEMON STATUS -->
+            <div layout="row" layout-margin>
+                <md-toolbar class="md-warn">
+                    <div class="md-toolbar-tools">
+                        <h2 class="md-toolbar-tools"> Status des Daemons </h2>
+                        <span flex> <!-- séparateur extensible --> </span>
+                        <md-button class="md-icon-button md-raised md-primary" aria-label="refresh daemon status" ng-click="refresh_daemons_status()">
+                            <md-tooltip md-direction="left"> Recharger le status des Daemons </md-tooltip>
+                            <md-icon md-font-library="material-icons" class="md-light md-48">refresh</md-icon>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+            </div>
+            <div layout="row" layout-margin>
+                <md-progress-linear md-mode="indeterminate" ng-if="daemons===undefined"></md-progress-linear>
+            </div>
+            <div layout="row" layout-margin layout-padding layout-align="center center">
+                <md-content flex layout-margin>
+                    <div layout="row" layout-margin layout-padding layout-align="space-around center" ng-if="err">
+                        <span ng-bind="err"></span>
+                    </div>
+                    <md-list>
+                        <md-list-item ng-repeat="daemon in daemons" flex>
+                            <div layout="row" layout-padding layout-align="space-around center">
+                                <h4>
+                                    <md-icon md-font-library="material-icons" ng-if="daemon.Status" class="md-light md-48">done</md-icon>
+                                    <md-icon md-font-library="material-icons" ng-if="!daemon.Status" class="md-light md-48">highlight_off</md-icon>
+                                    Daemon <span ng-bind="daemon.Name"></span>
+                                </h4>
+                                <div layout="row" layout-align="space-around center">
+                                    <md-button class="md-raised" ng-disabled="daemon.Status" ng-click="do_daemon_change(daemon.Name, 'start')">
+                                        start
+                                    </md-button>
+                                    <md-button class="md-raised" ng-click="do_daemon_change(daemon.Name, 'stop')">
+                                        stop
+                                    </md-button>
+                                    <md-button class="md-raised" ng-click="do_daemon_change(daemon.Name, 'restart')">
+                                        restart
+                                    </md-button>
+                                    <md-button class="md-raised" ng-disabled="daemon.Status" ng-click="do_daemon_change(daemon.Name, 'run-once')">
+                                        run now
+                                    </md-button>
+                                </div>
+                            </div>
+                        </md-list-item>
+                    </md-list>
+                </md-content>
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button ng-click="closeDialog()" class="md-raised md-primary">
+            Fermer
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

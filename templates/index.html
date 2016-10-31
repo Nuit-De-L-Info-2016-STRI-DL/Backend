@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+        <title>Exemple</title>
+        <!-- Angular Material stylesheets -->
+        <link rel="stylesheet" href="{{ static_url('css/angular-material.min.css') }}">
+        <link rel="stylesheet" href="{{ static_url('css/material.css') }}">
+        <!-- dataTable -->
+        <link rel="stylesheet" href="{{ static_url('css/dataTable.css') }}">
+        <link rel="stylesheet" href="{{ static_url('css/icons.css') }}">
+        <!-- angular-chart -->
+        <link rel="stylesheet" href="{{ static_url('css/angular-chart.min.css') }}">
+        <!-- fonts -->
+        <link rel="stylesheet" href="{{ static_url('css/google-roboto-font.css') }}">
+        <link rel="stylesheet" href="{{ static_url('css/google-icon.css') }}">
+        <!-- Angular.js Libraries -->
+        <script src="{{ static_url('js/dep/angular.min.js') }}"></script>
+        <script src="{{ static_url('js/dep/angular-animate.min.js') }}"></script>
+        <script src="{{ static_url('js/dep/angular-aria.min.js') }}"></script>
+        <script src="{{ static_url('js/dep/angular-messages.min.js') }}"></script>
+        <!-- Angular Material Library -->
+        <script src="{{ static_url('js/dep/angular-material.min.js') }}"></script>
+        <!-- Dashboard app  -->
+        <script src="{{ static_url('js/app/myapp.js') }}"></script>
+        <script src="{{ static_url('js/app/toolbar.js') }}"></script>
+    </head>
+    <body ng-app="DashboardAPI" ng-controller="mainControl" id="popupContainer" ng-cloak>
+        <!-- START : INTERNET EXPLORER WARNING -->
+            <!--[if IE]>
+                <h1> Votre navigateur est incompatible avec ce site  :(  </h1>
+            <![endif]-->
+            <div ng-if="internet_explorer" layout-margin layout-padding layout-align="center center">
+                <h1> Veuillez utiliser un autre navigateur ! ( par exemple Firefox, Chrome ...) </h1>
+            </div>
+        <!-- END : INTERNET EXPLORER WARNING -->
+        <div ng-if="!internet_explorer">
+            <!-- TOOLBAR -->
+            <toolbar></toolbar>
+            <!-- PAGE CONTENT -->
+            <md-content>
+                <p>
+                    Pas de contenu pour le moment !
+                </p>
+            </md-content>
+        </div>
+    </body>
+</html>
