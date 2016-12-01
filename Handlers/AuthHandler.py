@@ -8,13 +8,12 @@ from tornado import gen
 from Handlers.BaseHandler import BaseHandler
 
 
-def auth_as_admin(func):
+def auth_as_admin():
     @tornado.web.authenticated
     def func_wrapper(self):
         isadmin = self.redis_client.get("usersisadmin-" + self.get_current_user().decode("utf-8"))
-        logging.warning(isadmin)
         if not isadmin or isadmin.lower() != "true":
-            raise tornado.web.HTTPError(403, "Forbidden")
+            return tornado.web.HTTPError(403, "Forbidden")
     return func_wrapper
 
 
@@ -36,7 +35,7 @@ class LoginHandler(BaseHandler):
             self.clear_cookie('user')
             self.redirect('/')
         elif path_request == '/register':
-            self.is_admin()
+            auth_as_admin()
             self.render('register.html', user=self.current_user)
         else:
             self.send_error(status_code=400, reason='bad request')
@@ -67,20 +66,19 @@ class LoginHandler(BaseHandler):
                 self.redis_client.setex(self.request.remote_ip, (int(incorrect) + 1 if incorrect else 1), 3600 * 24)
                 self.render('login.html', user=self.current_user)
         elif path_request == '/register':
-            self.is_admin()
+            auth_as_admin()
             getusername = tornado.escape.xhtml_escape(self.get_argument('username'))
             getpassword = tornado.escape.xhtml_escape(self.get_argument('password'))
             getisadmin = tornado.escape.xhtml_escape(self.get_argument('isadmin', 'False'))
+
+            if len(getpassword) < 8:
+                raise tornado.web.HTTPError(400, "Bad Parameter")
 
             self.redis_client.set('users-' + getusername,
                                   (yield LoginHandler.executor.submit(LoginHandler.hash_password, getpassword)))
             self.redis_client.set('usersisadmin-' + getusername, getisadmin.lower() == "True")
         else:
             self.send_error(status_code=400, reason='bad request')
-
-    @auth_as_admin
-    def is_admin(self):
-        pass
 
     @staticmethod
     def hash_password(password):

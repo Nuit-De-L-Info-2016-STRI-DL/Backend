@@ -11,6 +11,7 @@ from tornado.options import define, options
 from Handlers.APIHandler import CommonAPIHandler
 from Handlers.MainHandler import MainHandler
 from Handlers.AuthHandler import LoginHandler
+from Handlers.ChatHandler import ChatSocketHandler, ChatHandler
 
 
 # app's title
@@ -36,6 +37,9 @@ class Application(tornado.web.Application):
             (r'/', MainHandler),  # index.html
             (r'/api(.*)$', CommonAPIHandler),
             (r'/auth(.*)$', LoginHandler),
+            (r'/chatsocket(.*)$', ChatSocketHandler),
+            (r'/chat(.*)$', ChatHandler),
+
         ]
         super(Application, self).__init__(handlers, **settings)
         self.redis_client = redis.Redis(host=options.redis_host, port=options.redis_port, db=options.redis_database,
