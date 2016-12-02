@@ -16,9 +16,5 @@ class BaseHandler(tornado.web.RequestHandler):
         """
         return self.get_secure_cookie("user")
 
-        def write_error(self, status_code, **kwargs):
-            if status_code == 404:
-                self.render('404.html')
-            else:
-                self.write('oupsss...')
-                return
+    def get(self):
+        self.render('404.html')

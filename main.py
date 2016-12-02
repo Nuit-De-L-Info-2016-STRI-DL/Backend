@@ -13,6 +13,7 @@ from Handlers.AnnonceHandler import AnnonceHandler
 from Handlers.MainHandler import MainHandler
 from Handlers.AuthHandler import LoginHandler
 from Handlers.ChatHandler import ChatSocketHandler, ChatHandler
+from Handlers.BaseHandler import BaseHandler
 import os
 
 abspath = os.path.abspath(__file__)
@@ -45,7 +46,7 @@ class Application(tornado.web.Application):
             (r'/chatsocket(.*)$', ChatSocketHandler),
             (r'/chat(.*)$', ChatHandler),
             (r'/annonce', AnnonceHandler),
-
+            (r'/.*', BaseHandler),
         ]
         super(Application, self).__init__(handlers, **settings)
         self.redis_client = redis.Redis(host=options.redis_host, port=options.redis_port, db=options.redis_database,
