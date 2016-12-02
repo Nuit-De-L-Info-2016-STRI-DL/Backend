@@ -1,50 +1,133 @@
-<!DOCTYPE html>
-<html lang="fr">
+<!DOCTYPE HTML>
+<html ng-app="Uploader" ng-controller="mainControl">
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-        <title>Exemple</title>
-        <!-- Angular Material stylesheets -->
-        <link rel="stylesheet" href="{{ static_url('css/angular-material.min.css') }}">
-        <link rel="stylesheet" href="{{ static_url('css/material.css') }}">
-        <!-- dataTable -->
-        <link rel="stylesheet" href="{{ static_url('css/dataTable.css') }}">
-        <link rel="stylesheet" href="{{ static_url('css/icons.css') }}">
-        <!-- angular-chart -->
-        <link rel="stylesheet" href="{{ static_url('css/angular-chart.min.css') }}">
-        <!-- fonts -->
-        <link rel="stylesheet" href="{{ static_url('css/google-roboto-font.css') }}">
-        <link rel="stylesheet" href="{{ static_url('css/google-icon.css') }}">
-        <!-- Angular.js Libraries -->
-        <script src="{{ static_url('js/dep/angular.min.js') }}"></script>
-        <script src="{{ static_url('js/dep/angular-animate.min.js') }}"></script>
-        <script src="{{ static_url('js/dep/angular-aria.min.js') }}"></script>
-        <script src="{{ static_url('js/dep/angular-messages.min.js') }}"></script>
-        <!-- Angular Material Library -->
-        <script src="{{ static_url('js/dep/angular-material.min.js') }}"></script>
-        <!-- Dashboard app  -->
-        <script src="{{ static_url('js/app/myapp.js') }}"></script>
-        <script src="{{ static_url('js/app/toolbar.js') }}"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="static/RSC/css/angular-material.min.css">
+        <link rel="stylesheet" href="static/RSC/css/css-family=Roboto-200,300,400,600.css">
+        <link rel="stylesheet" href="static/RSC/css/icon-family-Material+Icons.css">
+        <link rel="stylesheet" href="static/RSC/css/index.css">
+        <title ng-bind="app.name + ' ' + app.version"></title>
     </head>
-    <body ng-app="DashboardAPI" ng-controller="mainControl" id="popupContainer" ng-cloak>
-        <!-- START : INTERNET EXPLORER WARNING -->
-            <!--[if IE]>
-                <h1> Votre navigateur est incompatible avec ce site  :(  </h1>
-            <![endif]-->
-            <div ng-if="internet_explorer" layout-margin layout-padding layout-align="center center">
-                <h1> Veuillez utiliser un autre navigateur ! ( par exemple Firefox, Chrome ...) </h1>
+    <body ng-cloak>
+        <!-- MENU -->
+        <md-sidenav class="md-sidenav-left" md-component-id="left" md-disable-backdrop md-whiteframe="4">
+          <md-toolbar class="md-warn">
+            <div class="md-toolbar-tools">
+              <md-button class="md-icon-button md-raised md-primary" aria-label="fermer le menu" ng-click="toggleLeft()" target="_blank">
+                <md-icon md-font-library="material-icons" class="md-light">close</md-icon>
+	        Fermer
+              </md-button>
+              <h1 class="md-toolbar-tools">Menu</h1>
             </div>
-        <!-- END : INTERNET EXPLORER WARNING -->
-        <div ng-if="!internet_explorer">
-            <!-- TOOLBAR -->
-            <toolbar></toolbar>
-            <!-- PAGE CONTENT -->
-            <md-content>
-                <p>
-                    Pas de contenu pour le moment !
-                </p>
-            </md-content>
-        </div>
+          </md-toolbar>
+          <md-content layout-margin>
+            <p>
+              menu
+            </p>
+          </md-content>
+        </md-sidenav>
+        <!-- TITRE -->
+        <md-toolbar class="md-warn">
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button md-raised md-primary" aria-label="ouvrir le menu" ng-click="toggleLeft()" target="_blank">
+                    <md-icon md-font-library="material-icons" class="md-light">menu</md-icon>
+                </md-button>
+                <h1 ng-bind="app.name + ' ' + app.version"></h1>
+                <span flex> <!-- extending space --> </span>
+            </div>
+        </md-toolbar>
+        <!-- BARRE CHARGEMENT -->
+        <md-progress-linear ng-if="loading" md-mode="query"></md-progress-linear>
+        <!-- CONTENU PRINCIPAL -->
+        <md-content class="md-padding" ng-if="main_page">
+            <!-- DESCRIPTION -->
+            <section layout-margin ng-if="app.description">
+                <md-subheader class="md-primary" ng-bind="app.description"></md-subheader>
+            </section>
+	    <md-divider></md-divider>
+            <!-- ANNONCES -->
+            <section flex layout-wrap layout="column">
+                <div layout="column">
+			<md-card>
+			  <md-card-title>
+			    <md-card-title-media>
+			      <div class="md-media-sm card-media" layout>
+				<md-icon class="material-icons">warning</md-icon>
+			      </div>
+			    </md-card-title-media>
+			    <md-card-title-text>
+			      <span class="md-headline"> Annonce </span>
+			      <span class="md-subhead description">Ipsum lorem caveat emptor...</span>
+			    </md-card-title-text>
+			  </md-card-title>
+			</md-card>
+                </div>
+            </section>
+	    <md-divider></md-divider>
+            <!-- CONTENU -->
+            <section flex layout-wrap layout="column">
+            	<!-- BOUTONS -->
+                <div layout="column" layout-gt-xs="row" layout-align="center">
+		      <md-button flex class="md-raised md-primary">
+			 <md-icon class="material-icons">hotel</md-icon>
+			 Dormir
+		      </md-button>
+		      <md-button flex class="md-raised md-primary">
+			 <md-icon class="material-icons">restaurant</md-icon>
+			 Manger
+		      </md-button>
+		      <md-button flex class="md-raised md-primary">
+			 <md-icon class="material-icons">add_box</md-icon>
+			 Soins
+		      </md-button>
+		      <md-button flex class="md-raised md-primary">
+			 <md-icon class="material-icons">account_balance</md-icon>
+			 Démarches
+		      </md-button>
+                </div>
+	        <md-divider></md-divider>
+                <!-- CARTE -->
+                <div layout="column" id="map"></div>
+
+            </section>
+        </md-content>
+        <!-- CONTENU PRINCIPAL -->
+        <md-content class="md-padding" ng-if="contact_page">
+            <!-- DESCRIPTION -->
+            <section layout-margin ng-if="app.description">
+                <md-subheader class="md-primary" ng-bind="app.description"></md-subheader>
+            </section>
+	    <md-divider></md-divider>
+            <!-- ANNONCES -->
+            <section flex layout-wrap layout="column">
+                <div layout="column">
+			<md-card>
+			  <md-card-title>
+			    <md-card-title-media>
+			      <div class="md-media-sm card-media" layout>
+				<md-icon class="material-icons">warning</md-icon>
+			      </div>
+			    </md-card-title-media>
+			    <md-card-title-text>
+			      <span class="md-headline"> Annonce </span>
+			      <span class="md-subhead description">Ipsum lorem caveat emptor...</span>
+			    </md-card-title-text>
+			  </md-card-title>
+			</md-card>
+                </div>
+            </section>
+        </md-content>
+        <!-- JAVASCRIPT SCRIPTS -->
+        <script src="static/RSC/JS/dep/jquery-3.1.1.min.js"></script>
+        <script src="static/RSC/JS/dep/angular.min.js"></script>
+        <script src="static/RSC/JS/dep/angular-animate.min.js"></script>
+        <script src="static/RSC/JS/dep/angular-aria.min.js"></script>
+        <script src="static/RSC/JS/dep/angular-material.min.js"></script>
+        <script src="static/RSC/JS/myapp.js"></script>
+        <script src="static/RSC/JS/mapIntegration.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUsHDDNiwPZMowG868LTs3PVc3AHpvKFg&callback=initMap"
+                async defer></script>
     </body>
 </html>
+

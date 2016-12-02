@@ -1,16 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html ng-app="page_login" ng-controller="mainControl">
     <head>
         <meta charset="UTF-8">
-        <title>Tornado Chat Demo</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/static/RSC/css/angular-material.min.css">
+        <link rel="stylesheet" href="/static/RSC/css/css-family=Roboto-200,300,400,600.css">
+        <link rel="stylesheet" href="/static/RSC/css/icon-family-Material+Icons.css">
+        <title ng-bind="app.name + ' ' + app.version"></title>
     </head>
-    <body>
-        <form name="connection" action="login" method="post">
-            {% module xsrf_form_html() %}
-            <input required name="username" type="text" placeholder="Username">
-            <input required name="password" type="password" placeholder="Password">
-            <button type="submit"> Sign in </button>
-        </form>
+    <body ng-cloak>
+        <!-- TITRE -->
+        <md-toolbar class="md-warn">
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button md-raised md-primary" aria-label="retourner a l'accueil" ng-href="/" target="_blank">
+                    <md-icon md-font-library="material-icons" class="md-light">home</md-icon>
+                </md-button>
+                <h1 ng-bind="app.name + ' ' + app.version"></h1>
+                <span flex> <!-- extending space --> </span>
+            </div>
+        </md-toolbar>
+        <!-- CONTENU -->
+        <md-content class="md-padding">
+            <!-- DESCRIPTION -->
+            <section layout-margin ng-if="app.description">
+                <md-subheader class="md-primary" ng-bind="app.description"></md-subheader>
+            </section>
+	    <md-divider></md-divider>
+            <!-- FORM -->
+	    <form name="connection" action="login" method="post">
+	      {% module xsrf_form_html() %}
+              <div layout-margin layout-padding layout="column" layout-align="center center">
+	        <md-input-container>
+		  <label>Identifiant</label>
+      		  <md-icon class="material-icons">account_circle</md-icon>
+		  <input name="username" required type="text">
+	        </md-input-container>
+	        <md-input-container>
+		  <label>Mot de passe</label>
+      		  <md-icon class="material-icons">vpn_key</md-icon>
+		  <input name="password" required type="password">
+	        </md-input-container>
+	        <md-button type="submit" class="md-raised md-primary">Connexion</md-button>
+	      </div>
+	    </form>
+        </md-content>
+        <!-- JAVASCRIPT SCRIPTS -->
+        <script src="/static/RSC/JS/dep/angular.min.js"></script>
+        <script src="/static/RSC/JS/dep/angular-animate.min.js"></script>
+        <script src="/static/RSC/JS/dep/angular-aria.min.js"></script>
+        <script src="/static/RSC/JS/dep/angular-material.min.js"></script>
+        <script>
+		var myapp = angular.module('page_login', ['ngMaterial', 'ngAnimate']);
+		//
+		myapp.controller('mainControl', function($scope, $http, $mdDialog, $mdSidenav, $location) {
+		    // static vars :
+		    $scope.app = {};
+		    $scope.app.name = "Pas de toit pas de chocolat";
+		    $scope.app.version = "v0.1";
+		    $scope.app.description = "Authentifiez vous pour accéder aux fonctions de bénévolats et d'administration";
+		    $scope.app.url = $location.absUrl();
+		    $scope.app.project_source = "https://github.com/Nuit-De-L-Info-2016-STRI-DL";
+
+		    // other vars :
+		    $scope.loading = 0;  // loading bar state (0: disabled, !=0 : there is a request pending)
+
+		    // menu
+		    $scope.toggleLeft = buildToggler('left');
+		    function buildToggler(componentId) {
+		      return function() {
+			$mdSidenav(componentId).toggle();
+		      }
+		    };
+		});
+
+		// IE support
+		if (typeof String.prototype.endsWith !== 'function') {
+		    String.prototype.endsWith = function(suffix) {
+			return this.indexOf(suffix, this.length - suffix.length) !== -1;
+		    };
+		}
+	</script>
+        <!--    (╯°□°）╯ ︵ ┻━┻    -->
     </body>
 </html>
+

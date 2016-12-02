@@ -9,6 +9,7 @@ import tornado.httpserver
 from tornado.options import define, options
 
 from Handlers.APIHandler import CommonAPIHandler
+from Handlers.AnnonceHandler import AnnonceHandler
 from Handlers.MainHandler import MainHandler
 from Handlers.AuthHandler import LoginHandler
 from Handlers.ChatHandler import ChatSocketHandler, ChatHandler
@@ -39,6 +40,7 @@ class Application(tornado.web.Application):
             (r'/auth(.*)$', LoginHandler),
             (r'/chatsocket(.*)$', ChatSocketHandler),
             (r'/chat(.*)$', ChatHandler),
+            (r'/annonce', AnnonceHandler),
 
         ]
         super(Application, self).__init__(handlers, **settings)
