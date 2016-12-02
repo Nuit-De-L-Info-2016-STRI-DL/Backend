@@ -18,7 +18,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
         def write_error(self, status_code, **kwargs):
             if status_code == 404:
-                self.render('404.html'<Plug>PeepOpenage=None)
+                self.render('404.html')
             else:
                 self.write('oupsss...')
                 return
