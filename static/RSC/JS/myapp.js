@@ -33,9 +33,10 @@ myapp.controller('mainControl', function($scope, $http, $mdDialog, $mdSidenav, $
             url: '/annonce',
             data: new_annonce
         }).then(function (response) { // on success
-            $scope.main_page=true;
-            $scope.annonce_page=false;
-            $scope.contact_page=false;
+            $scope.main_page = true;
+            $scope.annonce_page = false;
+            $scope.contact_page = false;
+            $scope.refresh_annonces();
             $scope.loading --;
         }, function (response) { // on error
             console.log(response);

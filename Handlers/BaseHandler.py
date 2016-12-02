@@ -15,3 +15,10 @@ class BaseHandler(tornado.web.RequestHandler):
         :return: current connected user
         """
         return self.get_secure_cookie("user")
+
+        def write_error(self, status_code, **kwargs):
+            if status_code == 404:
+                self.render('404.html'<Plug>PeepOpenage=None)
+            else:
+                self.write('oupsss...')
+                return
