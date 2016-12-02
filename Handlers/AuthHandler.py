@@ -8,7 +8,7 @@ from tornado import gen
 from Handlers.BaseHandler import BaseHandler
 
 
-def auth_as_admin(func):
+def auth_as_admin():
     @tornado.web.authenticated
     def func_wrapper(self):
         isadmin = self.redis_client.get("usersisadmin-" + self.get_current_user().decode("utf-8"))

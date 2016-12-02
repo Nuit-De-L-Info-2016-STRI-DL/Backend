@@ -13,7 +13,11 @@ from Handlers.AnnonceHandler import AnnonceHandler
 from Handlers.MainHandler import MainHandler
 from Handlers.AuthHandler import LoginHandler
 from Handlers.ChatHandler import ChatSocketHandler, ChatHandler
+import os
 
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
 
 # app's title
 __title__ = 'Dashboard API'
@@ -31,7 +35,7 @@ class Application(tornado.web.Application):
             'template_path': './templates',
             'cookie_secret': ''.join([random.choice(string.printable) for _ in range(64)]),
             'login_url': '/auth/login',
-            'xsrf_cookies': True,
+            #'xsrf_cookies': True,
         }
         # create an app instance
         handlers = [

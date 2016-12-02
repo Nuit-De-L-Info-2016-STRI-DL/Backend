@@ -14,17 +14,31 @@
         <md-sidenav class="md-sidenav-left" md-component-id="left" md-disable-backdrop md-whiteframe="4">
           <md-toolbar class="md-warn">
             <div class="md-toolbar-tools">
-              <md-button class="md-icon-button md-raised md-primary" aria-label="fermer le menu" ng-click="toggleLeft()" target="_blank">
+              <md-button class="md-icon-button md-raised md-primary" aria-label="fermer le menu" ng-click="toggleLeft()">
                 <md-icon md-font-library="material-icons" class="md-light">close</md-icon>
-	        Fermer
               </md-button>
               <h1 class="md-toolbar-tools">Menu</h1>
             </div>
           </md-toolbar>
           <md-content layout-margin>
-            <p>
-              menu
-            </p>
+            <div layout="column">
+              <md-button class="md-button md-raised md-primary" aria-label="page d'accueil" ng-click="toggleLeft(); main_page=true; annonce_page=false; contact_page=false;">
+                <md-icon md-font-library="material-icons" class="md-light">home</md-icon>
+	        Accueil
+              </md-button>
+              <md-button class="md-button md-raised md-primary" aria-label="publier une annonce" ng-click="toggleLeft(); main_page=false; annonce_page=true; contact_page=false;">
+                <md-icon md-font-library="material-icons" class="md-light">create</md-icon>
+	        Publier une annonce
+              </md-button>
+              <md-button class="md-button md-raised md-primary" aria-label="nous contacter" ng-click="toggleLeft(); main_page=false; annonce_page=false; contact_page=true;">
+                <md-icon md-font-library="material-icons" class="md-light">mail</md-icon>
+	        Contact
+              </md-button>
+              <md-button class="md-button md-raised md-primary" aria-label="se connecter" ng-href="/auth/login">
+                <md-icon md-font-library="material-icons" class="md-light">lock_open</md-icon>
+	        Connexion
+              </md-button>
+            </div>
           </md-content>
         </md-sidenav>
         <!-- TITRE -->
@@ -40,25 +54,27 @@
         <!-- BARRE CHARGEMENT -->
         <md-progress-linear ng-if="loading" md-mode="query"></md-progress-linear>
         <!-- CONTENU PRINCIPAL -->
-        <md-content class="md-padding" ng-if="main_page">
+        <md-content class="md-padding" ng-show="main_page">
             <!-- DESCRIPTION -->
-            <section layout-margin ng-if="app.description">
-                <md-subheader class="md-primary" ng-bind="app.description"></md-subheader>
+            <section layout-margin layout="column" layout-align="center center">
+                <md-subheader class="md-primary">
+		    Description
+		</md-subheader>
             </section>
 	    <md-divider></md-divider>
             <!-- ANNONCES -->
             <section flex layout-wrap layout="column">
                 <div layout="column">
-			<md-card>
+			<md-card ng-repeat="annonce in annonces">
 			  <md-card-title>
 			    <md-card-title-media>
 			      <div class="md-media-sm card-media" layout>
-				<md-icon class="material-icons">warning</md-icon>
+				<md-icon class="material-icons">info</md-icon>
 			      </div>
 			    </md-card-title-media>
 			    <md-card-title-text>
-			      <span class="md-headline"> Annonce </span>
-			      <span class="md-subhead description">Ipsum lorem caveat emptor...</span>
+			      <span class="md-headline" ng-bind="annonce.title"></span>
+			      <span class="md-subhead description" ng-bind="annonce.description"></span>
 			    </md-card-title-text>
 			  </md-card-title>
 			</md-card>
@@ -68,7 +84,7 @@
             <!-- CONTENU -->
             <section flex layout-wrap layout="column">
             	<!-- BOUTONS -->
-                <div layout="column" layout-gt-xs="row" layout-align="center">
+                <div layout="column" layout-gt-xs="row" layout-align="center center">
 		      <md-button flex class="md-raised md-primary">
 			 <md-icon class="material-icons">hotel</md-icon>
 			 Dormir
@@ -88,35 +104,49 @@
                 </div>
 	        <md-divider></md-divider>
                 <!-- CARTE -->
-                <div layout="column" id="map"></div>
-
+                <div layout="column" layout-align="center" layout-margin layout-padding>
+			<div id="map"></div>
+		</div>
             </section>
         </md-content>
-        <!-- CONTENU PRINCIPAL -->
-        <md-content class="md-padding" ng-if="contact_page">
+        <!-- CONTENU ANNONCE -->
+        <md-content class="md-padding" ng-if="annonce_page">
             <!-- DESCRIPTION -->
-            <section layout-margin ng-if="app.description">
-                <md-subheader class="md-primary" ng-bind="app.description"></md-subheader>
+            <section layout-margin layout="column" layout-align="center center">
+                <md-subheader class="md-primary">
+		    Publier une annonce (il faut être connecté).
+		</md-subheader>
             </section>
 	    <md-divider></md-divider>
             <!-- ANNONCES -->
-            <section flex layout-wrap layout="column">
-                <div layout="column">
-			<md-card>
-			  <md-card-title>
-			    <md-card-title-media>
-			      <div class="md-media-sm card-media" layout>
-				<md-icon class="material-icons">warning</md-icon>
-			      </div>
-			    </md-card-title-media>
-			    <md-card-title-text>
-			      <span class="md-headline"> Annonce </span>
-			      <span class="md-subhead description">Ipsum lorem caveat emptor...</span>
-			    </md-card-title-text>
-			  </md-card-title>
-			</md-card>
-                </div>
+            <section flex layout-wrap layout="column" layout-align="center center">
+	        <md-input-container>
+		  <label>Titre</label>
+      		  <md-icon class="material-icons">format_shapes</md-icon>
+		  <input ng-model="new_annonce.title" required type="text"></input>
+	        </md-input-container>
+	        <md-input-container>
+		  <label>Description</label>
+      		  <md-icon class="material-icons">subtitles</md-icon>
+		  <textarea ng-model="new_annonce.description" required></textarea>
+	        </md-input-container>
+	        <md-button ng-click="push_annonces(new_annonce)" class="md-raised md-primary">Publier</md-button>
             </section>
+        </md-content>
+        <!-- CONTENU CONTACT -->
+        <md-content class="md-padding" ng-if="contact_page">
+            <!-- DESCRIPTION -->
+            <section layout-margin layout="column" layout-align="center center">
+                <md-subheader class="md-primary">
+		    Contactez l'administrateur par mail pour la création, la modification, la suppression de votre compte ou pour toute autre question !
+		</md-subheader>
+            </section>
+	    <md-divider></md-divider>
+	    <section layout="column" layout-align="center center">
+                <p>
+                    <a href="mailto:admin@msf.org">admin@msf.org</a>
+		</p>
+	    </section>
         </md-content>
         <!-- JAVASCRIPT SCRIPTS -->
         <script src="static/RSC/JS/dep/jquery-3.1.1.min.js"></script>
@@ -126,8 +156,7 @@
         <script src="static/RSC/JS/dep/angular-material.min.js"></script>
         <script src="static/RSC/JS/myapp.js"></script>
         <script src="static/RSC/JS/mapIntegration.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUsHDDNiwPZMowG868LTs3PVc3AHpvKFg&callback=initMap"
-                async defer></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUsHDDNiwPZMowG868LTs3PVc3AHpvKFg&callback=getLocation" async defer></script>
     </body>
 </html>
 

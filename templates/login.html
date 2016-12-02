@@ -22,7 +22,7 @@
         <!-- CONTENU -->
         <md-content class="md-padding">
             <!-- DESCRIPTION -->
-            <section layout-margin ng-if="app.description">
+            <section layout-margin ng-if="app.description" layout="column" layout-align="center center">
                 <md-subheader class="md-primary" ng-bind="app.description"></md-subheader>
             </section>
 	    <md-divider></md-divider>
@@ -33,12 +33,12 @@
 	        <md-input-container>
 		  <label>Identifiant</label>
       		  <md-icon class="material-icons">account_circle</md-icon>
-		  <input name="username" required type="text">
+		  <input name="username" required type="text"></input>
 	        </md-input-container>
 	        <md-input-container>
 		  <label>Mot de passe</label>
       		  <md-icon class="material-icons">vpn_key</md-icon>
-		  <input name="password" required type="password">
+		  <input name="password" required type="password"></input>
 	        </md-input-container>
 	        <md-button type="submit" class="md-raised md-primary">Connexion</md-button>
 	      </div>
